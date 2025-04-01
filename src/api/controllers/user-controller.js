@@ -28,7 +28,7 @@ const putUser = (req, res) => {
   res.sendStatus(200);
 };
 
-const deleteCat = (req, res) => {
+const deleteUser = (req, res) => {
   // not implemented in this example, this is future homework
   res.sendStatus(200);
 };
