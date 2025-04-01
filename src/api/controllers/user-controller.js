@@ -33,4 +33,4 @@ const deleteCat = (req, res) => {
   res.sendStatus(200);
 };
 
-export { getCat, getUserById, postCat, putUser, deleteUser };
+export { getUser, getUserById, postUser, putUser, deleteUser };
