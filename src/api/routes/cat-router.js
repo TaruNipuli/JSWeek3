@@ -1,13 +1,13 @@
-import multer from "multer";
-
-import express from "express";
 import {
+  deleteCat,
   getCat,
   getCatById,
   postCat,
   putCat,
-  deleteCat,
 } from "../controllers/cat-controller.js";
+
+import express from "express";
+import multer from "multer";
 
 const catRouter = express.Router();
 
