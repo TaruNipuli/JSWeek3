@@ -1,6 +1,6 @@
 import sharp from "sharp";
 
-const createThumbnail = async (reg, res, next) => {
+const createThumbnail = async (req, res, next) => {
   console.log("Todo: tee kuvakäsittely", req.file);
   if (!req.file) {
     next("Kuvaa ei löydy");
