@@ -1,0 +1,21 @@
+POST http://127.0.0.1:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "tarunip",
+    "password": "1234"
+}
+
+### Login Request
+POST http://127.0.0.1:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "tarunip",
+  "password": "1234"
+}
+
+### Get my user info
+GET http://localhost:3000/api/v1/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MywibmFtZSI6InRhcnVuaXAiLCJ1c2VybmFtZSI6InRhcnVuaXAiLCJlbWFpbCI6InRhcnVuaXBAbWV0cm9wb2xpYS5maSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzQzODgzNDg1LCJleHAiOjE3NDM5Njk4ODV9.MON9rY6StZV3_ZxP_6QRF2JnB320Z6GZOJXUNf3mNzI
+
