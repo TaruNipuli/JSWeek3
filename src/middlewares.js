@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
+import multer from "multer";
 
 const createThumbnail = async (req, res, next) => {
   console.log("Todo: tee kuvakäsittely", req.file);
@@ -53,4 +54,21 @@ const authorizeOwner = (getResourceOwnerId) => {
   };
 };
 
-export { authenticateToken, createThumbnail, authorizeOwner };
+const upload = multer({
+  dest: "uploads/",
+  limits: {
+    fileSize: 10 * 1024 * 1024, // Max 10 MB
+  },
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype.startsWith("image/") ||
+      file.mimetype.startsWith("video/")
+    ) {
+      cb(null, true); // Accept file
+    } else {
+      cb(new Error("Only images and videos are allowed"), false); // Reject file
+    }
+  },
+});
+
+export { authenticateToken, createThumbnail, authorizeOwner, upload };

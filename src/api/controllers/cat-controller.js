@@ -4,28 +4,35 @@ const getCat = (req, res) => {
   res.json(listAllCats());
 };
 
-const getCatById = async (req, res) => {
+const getCatById = async (req, res, next) => {
   try {
     const cat = await findCatById(req.params.id);
 
-    if (cat) {
-      res.json(cat); // Return the cat if found
-    } else {
-      res.status(404).json({ message: "Cat not found" });
+    if (!cat) {
+      const error = new Error("Cat not found");
+      error.status = 404;
+      throw error; // Error handled by the error handler
     }
+
+    res.json(cat); // Return cat if found
   } catch (error) {
-    console.error("Error fetching cat by ID:", error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error); // Pass error to the error handler middleware
   }
 };
 
-const postCat = (req, res) => {
-  const result = addCat(req.body);
-  if (result.cat_id) {
-    res.status(201);
-    res.json({ message: "New cat added.", result });
-  } else {
-    res.sendStatus(400);
+const postCat = async (req, res, next) => {
+  try {
+    const result = await addCat(req.body);
+
+    if (!result.cat_id) {
+      const error = new Error("Failed to add cat");
+      error.status = 400;
+      throw error; // Error handled by the error handler
+    }
+
+    res.status(201).json({ message: "New cat added.", result });
+  } catch (error) {
+    next(error); // Pass error to the error handler middleware
   }
 };
 

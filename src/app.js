@@ -2,6 +2,7 @@ import express from "express";
 import api from "./api/index.js";
 import dotenv from "dotenv";
 import cors from "cors";
+import errorHandler from "./error-handler.js";
 
 const app = express();
 
@@ -18,5 +19,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1", api);
+
+// Error handling middleware
+app.use(errorHandler);
 
 export default app;
