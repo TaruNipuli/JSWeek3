@@ -11,12 +11,19 @@ const getUser = (req, res) => {
   res.json(listAllUsers());
 };
 
-const getUserById = (req, res) => {
-  const cat = findUserById(req.params.id);
-  if (cat) {
-    res.json(cat);
-  } else {
-    res.sendStatus(404);
+const getUserById = async (req, res, next) => {
+  try {
+    const user = await findUserById(req.params.id);
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error; // Pass error to the error handler
+    }
+
+    res.json(user);
+  } catch (error) {
+    next(error); // Pass error to the error handler middleware
   }
 };
 

@@ -8,12 +8,15 @@ import {
 } from "../controllers/cat-controller.js";
 
 import express from "express";
-import multer from "multer";
-import { authenticateToken, authorizeOwner } from "../../middlewares.js"; // Import middlewares
+import { body } from "express-validator";
+import {
+  authenticateToken,
+  authorizeOwner,
+  upload,
+} from "../../middlewares.js"; // Import upload and other middlewares
+import { validationErrors } from "../../validators.js";
 
 const catRouter = express.Router();
-
-const upload = multer({ dest: "uploads/" });
 
 // Middleware to get the owner of the cat
 const getCatOwnerId = async (catId) => {
@@ -25,7 +28,21 @@ const getCatOwnerId = async (catId) => {
 catRouter
   .route("/")
   .get(getCat)
-  .post(authenticateToken, upload.single("file"), postCat);
+  .post(
+    authenticateToken, // Ensure the user is authenticated
+    upload.single("file"), // Handle file upload
+    body("cat_name")
+      .trim()
+      .isLength({ min: 3, max: 50 })
+      .withMessage("Cat name must be 3-50 characters long"),
+    body("weight")
+      .isFloat({ min: 0 })
+      .withMessage("Weight must be a positive number"),
+    body("owner").isInt().withMessage("Owner must be an integer"),
+    body("birthdate").isDate().withMessage("Birthdate must be a valid date"),
+    validationErrors, // Middleware to handle validation errors
+    postCat // Controller to handle the request
+  );
 
 // Protected routes: Only the owner can update or delete a cat
 catRouter
